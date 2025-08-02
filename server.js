@@ -191,12 +191,10 @@ io.on('connection', (socket) => {
     socket.emit('tracking-joined', { trackingId, message: 'Tracking room\'a katıldınız' });
     
     // Room'daki client sayısını kontrol et
-    io.in(trackingId).clients((err, clients) => {
-      if (err) {
-        console.error('Room client listesi alınamadı:', err);
-      } else {
-        console.log(`📊 Room ${trackingId} içindeki client sayısı: ${clients.length}`);
-      }
+    io.in(trackingId).fetchSockets().then(sockets => {
+      console.log(`📊 Room ${trackingId} içindeki client sayısı: ${sockets.length}`);
+    }).catch(err => {
+      console.error('Room client listesi alınamadı:', err);
     });
   });
 
@@ -331,17 +329,15 @@ app.post('/api/save-location', validateLocationData, (req, res) => {
       io.to(trackingId).emit('location-update', locationData);
       
       // Debug: Room'daki client sayısını kontrol et
-      io.in(trackingId).clients((err, clients) => {
-        if (err) {
-          console.error('Room client listesi alınamadı:', err);
+      io.in(trackingId).fetchSockets().then(sockets => {
+        console.log(`📊 Room ${trackingId} içindeki client sayısı: ${sockets.length}`);
+        if (sockets.length === 0) {
+          console.log(`⚠️ Room ${trackingId} boş, veri gönderilemedi`);
         } else {
-          console.log(`📊 Room ${trackingId} içindeki client sayısı: ${clients.length}`);
-          if (clients.length === 0) {
-            console.log(`⚠️ Room ${trackingId} boş, veri gönderilemedi`);
-          } else {
-            console.log(`✅ Room ${trackingId} içindeki ${clients.length} client'a veri gönderildi`);
-          }
+          console.log(`✅ Room ${trackingId} içindeki ${sockets.length} client'a veri gönderildi`);
         }
+      }).catch(err => {
+        console.error('Room client listesi alınamadı:', err);
       });
 
       res.json({ success: true, message: 'Konum kaydedildi' });
