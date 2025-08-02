@@ -19,7 +19,7 @@ const io = socketIo(server, {
   allowEIO3: true
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000;
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
 // Rate limiting - Tamamen devre dışı (geliştirme için)

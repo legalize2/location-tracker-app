@@ -4,7 +4,8 @@
   "description": "Kullanıcı rızası ile konum takip uygulaması",
   "main": "server.js",
   "engines": {
-    "node": ">=18.0.0"
+    "node": "18.x",
+    "npm": "9.x"
   },
   "scripts": {
     "start": "node server.js",
