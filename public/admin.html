@@ -1188,11 +1188,11 @@
                 console.log('📦 Leaflet.js yükleniyor...');
                 const leafletCSS = document.createElement('link');
                 leafletCSS.rel = 'stylesheet';
-                leafletCSS.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+                leafletCSS.href = 'https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css';
                 document.head.appendChild(leafletCSS);
                 
                 const leafletScript = document.createElement('script');
-                leafletScript.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+                leafletScript.src = 'https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js';
                 leafletScript.onload = () => {
                     console.log('✅ Leaflet.js yüklendi');
                     setTimeout(() => createRealtimeMap(), 100);

@@ -54,7 +54,7 @@ if (NODE_ENV === 'production') {
     res.setHeader('X-XSS-Protection', '1; mode=block');
     res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
     // Content Security Policy - QR kod ve Leaflet.js için güncellendi
-    res.setHeader('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com; style-src 'self' 'unsafe-inline' https://unpkg.com; img-src 'self' https://api.qrserver.com https://*.tile.openstreetmap.org data:; connect-src 'self' https://*.tile.openstreetmap.org;");
+    res.setHeader('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://unpkg.com https://cdn.jsdelivr.net; img-src 'self' https://api.qrserver.com https://*.tile.openstreetmap.org data:; connect-src 'self' https://*.tile.openstreetmap.org; font-src 'self' https://unpkg.com https://cdn.jsdelivr.net;");
     next();
   });
 }
