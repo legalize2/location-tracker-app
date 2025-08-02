@@ -14,7 +14,9 @@ const io = socketIo(server, {
   cors: {
     origin: "*",
     methods: ["GET", "POST"]
-  }
+  },
+  transports: ['websocket', 'polling'],
+  allowEIO3: true
 });
 
 const PORT = process.env.PORT || 3000;
@@ -36,22 +38,23 @@ const NODE_ENV = process.env.NODE_ENV || 'development';
 
 // Production güvenlik middleware'leri
 if (NODE_ENV === 'production') {
-  // HTTPS yönlendirmesi
-  app.use((req, res, next) => {
-    if (req.header('x-forwarded-proto') !== 'https') {
-      res.redirect(`https://${req.header('host')}${req.url}`);
-    } else {
-      next();
-    }
-  });
+  // HTTPS yönlendirmesi - Render için devre dışı
+  // app.use((req, res, next) => {
+  //   if (req.header('x-forwarded-proto') !== 'https') {
+  //     res.redirect(`https://${req.header('host')}${req.url}`);
+  //   } else {
+  //     next();
+  //   }
+  // });
   
-  // Güvenlik header'ları
+  // Güvenlik header'ları - Render için optimize edildi
   app.use((req, res, next) => {
     res.setHeader('X-Content-Type-Options', 'nosniff');
     res.setHeader('X-Frame-Options', 'DENY');
     res.setHeader('X-XSS-Protection', '1; mode=block');
     res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
-    res.setHeader('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';");
+    // Content Security Policy - QR kod için img-src eklendi
+    res.setHeader('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' https://api.qrserver.com data:;");
     next();
   });
 }
